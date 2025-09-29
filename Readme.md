@@ -27,7 +27,7 @@ To train Ultralytics YOLO models with LightlyTrain, install the package with the
   torchvision==0.21
   pytorch-lightning==2.5
 
-# Dependencies are listed in requirements.txt. Install them in a fresh virtual environment:
+### Dependencies are listed in requirements.txt. Install them in a fresh virtual environment:
 
 python3 -m venv .venv
 source .venv/bin/activate   # On Windows use: .venv\Scripts\activate
@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-# Run the script from the command line after activating your environment. At minimum, provide paths to your image dataset and an output directory. You can also customise the model, method, epochs, batch size, crop scale, and image size.
+### Run the script from the command line after activating your environment. At minimum, provide paths to your image dataset and an output directory. You can also customise the model, method, epochs, batch size, crop scale, and image size.
 
 python pretrain_production.py \
   --data /path/to/images \
