@@ -1,35 +1,42 @@
 # Self-Supervised Pretraining Script
 
-This repository provides a Python script for self-supervised pretraining of object-detection backbones using the [LightlyTrain](https://docs.lightly.ai/) framework. The script wraps the `lightly_train.train` API in a command-line interface, allowing you to specify input images, output directory, model configuration, training method, and hyper-parameters without editing the code. All file paths are resolved at runtime to avoid hard-coded platform-specific values.
+This repository provides a Python script for **self-supervised pretraining of object-detection backbones** using the [LightlyTrain](https://docs.lightly.ai/) framework.  
+
+The script wraps the `lightly_train.train` API in a command-line interface, so you can specify:
+
+- Input images  
+- Output directory  
+- Model configuration  
+- Training method  
+- Hyperparameters  
+
+—all without editing the code. Paths are resolved at runtime to avoid hard-coded, platform-specific values.
 
 ---
 
 ## Requirements
 
-The application targets **Python 3.8–3.12**, which is the supported range for [LightlyTrain](https://docs.lightly.ai/).  
+This script supports **Python 3.8–3.12**, the officially supported range for [LightlyTrain](https://docs.lightly.ai/).  
 
-To use Ultralytics YOLO models with LightlyTrain you must install the package with the **ultralytics extras**:
+To train Ultralytics YOLO models with LightlyTrain, install the package with the **ultralytics extras**:
 
-- `lightly-train[ultralytics]` – provides the core training functionality and pulls in Ultralytics support ([docs](https://docs.lightly.ai/)).
-- `torch`, `torchvision`, and `pytorch-lightning` – pinned to compatible versions as recommended by the LightlyTrain documentation ([docs](https://docs.lightly.ai/)):  
+- `lightly-train[ultralytics]` – core training functionality with YOLO integration  
+- `torch`, `torchvision`, and `pytorch-lightning` – pinned to recommended versions:  
   ```text
   torch==2.5
   torchvision==0.21
   pytorch-lightning==2.5
 
-These dependencies are listed in the accompanying requirements.txt. Install them in a fresh virtual environment with:
+# Dependencies are listed in requirements.txt. Install them in a fresh virtual environment:
 
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate   # On Windows use: .venv\Scripts\activate
 pip install -r requirements.txt
 
 
-⚠️ Note: Using Ultralytics models may require a commercial license. Consult the Ultralytics website
- for licensing details.
+## Usage
 
-Usage
-
-Run the script from the command line after activating your environment. At a minimum, provide paths to your image data and an output directory. You can customise the model, training method, number of epochs, batch size, minimum crop scale, and image size:
+# Run the script from the command line after activating your environment. At minimum, provide paths to your image dataset and an output directory. You can also customise the model, method, epochs, batch size, crop scale, and image size.
 
 python pretrain_production.py \
   --data /path/to/images \
@@ -41,36 +48,46 @@ python pretrain_production.py \
   --min-scale 0.1 \
   --image-size 640 640
 
+## Notes
 
-The --data argument accepts either a single directory or a list of directories separated by your operating system’s path separator (: on Unix and ; on Windows).
+--data accepts either a single directory or multiple directories separated by your OS path separator (: on Unix, ; on Windows).
 
-The script verifies that each directory exists before starting training.
+The script validates all input directories before training.
 
-The output directory is created automatically.
+The output directory is created automatically if missing.
 
-After training completes, logs, checkpoints, and metrics are saved under the specified output folder.
+After training, logs, checkpoints, and metrics are saved in the output folder.
 
-Customisation
+## Customisation
 
-You can adjust the following parameters to suit your hardware and dataset:
+You can adjust the following parameters to suit your dataset and hardware:
 
-Model – choose any supported Ultralytics YAML or PT model file, such as ultralytics/yolov8s.yaml or ultralytics/yolo11l.pt.
+## Model
 
-Models ending with .pt start from pretrained weights.
+Supports any Ultralytics YAML or PT file, e.g. ultralytics/yolov8s.yaml or ultralytics/yolo11l.pt.
 
-Models ending with .yaml start from scratch.
-(docs
-)
+.yaml → train from scratch
 
-Method – select the self-supervised method (distillation, DINOv2, etc.); the default is distillation.
+.pt → start from pretrained weights
 
-Epochs and batch size – control training time and memory usage.
+Method
 
-Image transforms – specify --min-scale and --image-size to configure the random resize crop and the final resolution.
+## Choose the self-supervised method: distillation (default), DINOv2, etc.
 
-License
+Epochs & Batch Size
 
-This code depends on LightlyTrain, which is available under the AGPL-3.0 licence, and Ultralytics YOLO models, which may require a commercial licence for certain use cases (docs
-).
+Balance training duration and memory usage.
 
-Please review the licences of all dependencies before deploying this script in a production environment.
+Image Transforms
+
+Use --min-scale for the minimum crop scale.
+
+Use --image-size to set final resolution (e.g. 640 640).
+
+## License
+
+This project depends on:
+
+LightlyTrain (AGPL-3.0 licence)
+
+Ultralytics YOLO models (may require a commercial licence for certain use cases)
